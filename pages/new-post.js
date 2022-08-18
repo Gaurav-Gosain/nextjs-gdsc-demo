@@ -61,8 +61,28 @@ const NewPost = ({user}) => {
     else {
       setUploading(true);
 
-      // ! Firestore create a document here
-      // ? Logic goes here...
+      const docRef = doc(collection(db, "posts"));
+
+      const post = {
+        postId: docRef.id,
+        caption: caption,
+        image: image,
+        createdAt: Date.now(),
+        likes: [],
+        user: {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        },
+      };
+
+      await setDoc(docRef, post);
+
+      //! alternate way
+      //! addDoc(collection(db, "posts"), post);
+
+      setUploading(false);
 
       router.push("/profile");
     }

@@ -47,11 +47,24 @@ const CustomCard = ({
   const [user] = useAuthState(auth);
 
   const updateLikes = async () => {
-    //! Firestore update operation here...
+    const postRef = doc(db, "posts", postId);
+
+    if (likes.includes(user.uid)) {
+      await updateDoc(postRef, {
+        likes: arrayRemove(user.uid),
+      });
+    } else {
+      await updateDoc(postRef, {
+        likes: arrayUnion(user.uid),
+      });
+    }
   };
 
   const deletePost = async () => {
-    //! Firestore delete operation here...
+    await deleteDoc(doc(db, "posts", postId));
+
+    setButtonRef(null);
+    setOpen(false);
   };
 
   return (

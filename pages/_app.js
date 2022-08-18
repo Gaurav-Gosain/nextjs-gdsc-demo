@@ -18,7 +18,10 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const [user] = useAuthState(auth);
 
-  const posts = [];
+  const [posts] = useCollectionData(
+    query(collection(db, "posts"), orderBy("createdAt", "desc"))
+  );
+
 
   const protectedRoutes = ["/", "/login"];
 
